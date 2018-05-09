@@ -1,0 +1,41 @@
+﻿<Window x:Class="Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="599.682" Width="974.47">
+
+    <Grid>
+        <TabControl Margin="10">
+            <TabControl.FontSize>16</TabControl.FontSize>
+            <TabControl.FontWeight>bold</TabControl.FontWeight>
+            <TabItem Header="Control">
+                <Grid>
+                    <Grid.RowDefinitions>
+                    </Grid.RowDefinitions>
+                    <Label Content="Socket Server Url: " Margin="10,10,0,0" HorizontalAlignment="Left" Width="151" Height="32" VerticalAlignment="Top"/>
+                    <TextBox x:Name="SocketUrl" Height="28" TextWrapping="Wrap" Margin="166,14,173,0" VerticalAlignment="Top">
+                        <TextBox.Text>ws://localhost:5566</TextBox.Text>
+                    </TextBox>
+                    <Button x:Name="CaptureBtn" Content="Capture Local View" Margin="10,76,0,0" Click="CaptureBtn_Click" HorizontalAlignment="Left" Width="184" Height="58" VerticalAlignment="Top"/>
+                    <Button x:Name="ConnectBtn" Content="Connect SocketServer" Margin="10,139,0,0" Click="ConnectBtn_Click" Height="58" VerticalAlignment="Top" HorizontalAlignment="Left" Width="184"/>
+                    <Button x:Name="BuildRtc" Content="Build Rtc" Margin="10,202,0,0"  Height="58" VerticalAlignment="Top" HorizontalAlignment="Left" Width="184" Click="BuildRtc_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Remote View">
+                <Grid Background="Black">
+                    <Grid.ColumnDefinitions>
+                    </Grid.ColumnDefinitions>
+                    <Image x:Name="RemoteView" Margin="10,10,0,0" Height="497" VerticalAlignment="Top" HorizontalAlignment="Left" Width="920"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Local View">
+                <Grid x:Name="LocalViewGrid" Background="Black">
+                    <Image x:Name="LocalView" Margin="10,10,0,0" Height="502" VerticalAlignment="Top" HorizontalAlignment="Left" Width="920"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
