@@ -18,7 +18,6 @@ namespace Vedio
         protected Bitmap Img;
         protected GCHandle BufHandle;
         public IntPtr ImgBufPtr { get; private set; }
-        //public IntPtr F_Ptr = IntPtr.Zero;
 
         /// <summary>
         /// Capture Current View
@@ -28,18 +27,14 @@ namespace Vedio
         {
             try
             {
-
                 lock (locker)
                 {
                     IntPtr fPtr = WindowHelper.Helper.GetForegroundWindow();
                     Rectangle windowRtg = WindowHelper.Helper.GetWindowCoordinate(hWnd);
                     ResetContent(hWnd, windowRtg.Width, windowRtg.Height);
-                    //Graphics.CopyFromScreen(new Point(windowRtg.X, windowRtg.Y), new Point(0, 0), new Size(windowRtg.Width, windowRtg.Height));
 
-                    if (hWnd == fPtr)
-                        Graphics.CopyFromScreen(new Point(windowRtg.X, windowRtg.Y), new Point(0, 0), new Size(windowRtg.Width, windowRtg.Height));
-                    //else
-                    //    Graphics.FillRectangle(new SolidBrush(Color.Black), windowRtg);
+                    if (hWnd == fPtr) Graphics.CopyFromScreen(new Point(windowRtg.X, windowRtg.Y), new Point(0, 0), new Size(windowRtg.Width, windowRtg.Height));
+
                     return Img;
                 }
             }
@@ -66,6 +61,6 @@ namespace Vedio
             Img = new Bitmap(width, height, width * 4, PixelFormat.Format32bppArgb, ImgBufPtr);
             Graphics = Graphics.FromImage(Img);
         }
-       
+
     }
 }
