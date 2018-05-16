@@ -45,10 +45,23 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Capturer.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Model\VedioCaptureInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RtcCapturer.cs" />
     <Compile Include="ScreenCapture.cs" />
+    <Compile Include="WindowCapture.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebRtc.NET\WebRtc.NET.csproj">
+      <Project>{01062C91-04F7-486F-BC09-9C5B3EE468AB}</Project>
+      <Name>WebRtc.NET</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowHelper\WindowHelper.csproj">
+      <Project>{e2a65510-2df5-465d-8ccf-df0cf6c9341f}</Project>
+      <Name>WindowHelper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

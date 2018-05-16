@@ -20,6 +20,6 @@ namespace Vedio.Model
         private Rectangle CurrentBounds => Screen.PrimaryScreen.Bounds;
         public int Width => CurrentBounds.Width;
         public int Height => CurrentBounds.Height;
-        public int CaptureFps => 5;
+        public int CaptureFps => 25;
     }
 }
