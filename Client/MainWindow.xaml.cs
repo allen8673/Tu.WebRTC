@@ -18,6 +18,7 @@ using Vedio.Model;
 using System.Drawing;
 using Vedio;
 using System.Diagnostics;
+using Client.Model;
 
 namespace Client
 {
@@ -26,12 +27,14 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
-        RtcClient _ClientPeer;
         public MainWindow()
         {
             InitializeComponent();
+            this.WindowList.ItemsSource = new WindowList(WindowHelper.Helper.GetHandlingWindowList());
         }
-
+        #region Local/Remote
+        RtcClient _ClientPeer;
+        Bitmap _RemoteView;
         private void ConnectBtn_Click(object sender, RoutedEventArgs e)
         {
             if (_ClientPeer == null)
@@ -62,31 +65,41 @@ namespace Client
             }
         }
 
-
         Timer _ViewCaptureTrigger;
         ScreenCaptureInfo _CaptureInfo = new ScreenCaptureInfo();
-        ScreenCapturer _Capturer = new ScreenCapturer();
+        Capturer _Capturer = new ScreenCapturer();
+        //Capturer _Capturer = new RtcCapturer();
         Bitmap _ScreenView;
         private void CaptureBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (_ViewCaptureTrigger != null)
+            try
             {
-                _ViewCaptureTrigger.Enabled = !_ViewCaptureTrigger.Enabled;
-                return;
-            }
+                if (_ViewCaptureTrigger != null)
+                {
+                    _ViewCaptureTrigger.Enabled = !_ViewCaptureTrigger.Enabled;
+                    return;
+                }
 
-            _ViewCaptureTrigger = new Timer { Interval = 1000 / _CaptureInfo.CaptureFps, };
-            _ViewCaptureTrigger.Elapsed += (s, o) =>
-            {
-                _ScreenView = _Capturer.CaptureView();
-                RefreshLocalView();
-            };
-            _ViewCaptureTrigger.Enabled = true;
+                if (_Capturer is RtcCapturer)
+                {
+                    ((RtcCapturer)_Capturer).InjectRtc(_ClientPeer._WebRtc);
+                }
+
+                _ViewCaptureTrigger = new Timer { Interval = 1000 / _CaptureInfo.CaptureFps, };
+                _ViewCaptureTrigger.Elapsed += (s, o) =>
+                {
+                    _ScreenView = _Capturer.CaptureView();
+                    RefreshLocalView();
+                };
+                _ViewCaptureTrigger.Enabled = true;
+            }
+            catch (Exception ex)
+            { }
+
 
         }
 
         Timer _ViewPushTrigger;
-        Bitmap _RemoteView;
         private void BuildRtc_Click(object sender, RoutedEventArgs e)
         {
             if (_ClientPeer == null) return;
@@ -95,6 +108,11 @@ namespace Client
             {
                 _ViewPushTrigger.Enabled = !_ViewPushTrigger.Enabled;
                 return;
+            }
+
+            if (_Capturer is RtcCapturer)
+            {
+                ((RtcCapturer)_Capturer).InjectRtc(_ClientPeer._WebRtc);
             }
 
             _ViewPushTrigger = new Timer { Interval = 1000 / _CaptureInfo.CaptureFps, };
@@ -137,6 +155,49 @@ namespace Client
                 }
             }));
         }
+        #endregion
 
+        Timer _WindowCaptureTrigger;
+        Bitmap _WindowView;
+        WindowCapture _WindowCapture = new WindowCapture();
+        private void WindowCapureBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowInfo info = this.WindowList.SelectedItem as WindowInfo;
+
+            try
+            {
+                if (_WindowCaptureTrigger != null)
+                {
+                    _WindowCaptureTrigger.Enabled = !_WindowCaptureTrigger.Enabled;
+                    return;
+                }
+
+                _WindowCaptureTrigger = new Timer { Interval = 1000 / _CaptureInfo.CaptureFps, };
+
+                _WindowCaptureTrigger.Elapsed += (s, o) =>
+                {
+                    _WindowView = _WindowCapture.CaptureView(info.HandlingPtr);
+                    RefreshWindowView();
+                };
+                _WindowCaptureTrigger.Enabled = true;
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        private void RefreshWindowView()
+        {
+            this.WindowView.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                try
+                {
+                    WindowView.Source = Helper.BitmapToBitmapSource(_WindowView);
+                }
+                catch (Exception ex)
+                {
+                    Debug.Write($"Refresh Error:{ex.Message}");
+                }
+            }));
+        }
     }
 }

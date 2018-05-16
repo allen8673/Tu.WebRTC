@@ -184,6 +184,13 @@ namespace WebRtc.NET
             return CaptureFrameBGRX(p, ref width, ref height);
         }
 
+        [DllImport(dll)]
+        static extern void SetCaptureWindows(IntPtr p, bool enable);
+        public void SetCaptureWindows(bool enable)
+        {
+            SetCaptureWindows(p, enable);
+        }
+
         [SuppressUnmanagedCodeSecurity]
         [DllImport(dll)]
         static extern void CaptureFrameAndPush(IntPtr p);

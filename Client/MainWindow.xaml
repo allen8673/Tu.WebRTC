@@ -36,6 +36,14 @@
                     <Image x:Name="LocalView" Margin="10,10,0,0" Height="502" VerticalAlignment="Top" HorizontalAlignment="Left" Width="920"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="Window View">
+                <Grid x:Name="WindowViewGrid">
+                    <Image x:Name="WindowView" Margin="10,10,10,0" OpacityMask="#FF401212" Height="357" VerticalAlignment="Top" />
+                    <ListBox x:Name="WindowList" Margin="10,382,0,10" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="677"/>
+                    <Button x:Name="WindowCapureBtn" Content="Capture" Margin="0,0,10,10" VerticalAlignment="Bottom" Height="83" Click="WindowCapureBtn_Click" HorizontalAlignment="Right" Width="214" Grid.Column="1"/>
+
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
